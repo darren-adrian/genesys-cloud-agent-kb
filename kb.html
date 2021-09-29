@@ -14,7 +14,7 @@
 
 <body onload="start()">
     <div class="container" id="container">
-        <div id="messages" class="container overflow-auto position-relative" style="max-height: 75vh; min-height: 75vh">
+        <div id="messages" class="container overflow-auto position-relative m-3">
         </div>
     </div>
     <script>
@@ -139,8 +139,9 @@
 
                                     if (kbAnswer.total > 0) {
                                         console.log(kbAnswer.results[0].faq.answer)
+                                        console.log('confidence: ', (kbAnswer.results[0].confidence).toFixed(2))
                                         console.log('conversationId: ', gc_conversationId)
-                                        renderKB(kbAnswer.results[0].faq.answer)
+                                        renderKB(kbAnswer.results[0].faq.answer, (kbAnswer.results[0].confidence).toFixed(2))
                                         if (!gc_communicationId) {
                                             let conversation = await capi.getConversation(gc_conversationId)
                                             console.log('conversation: ', conversation)
@@ -165,26 +166,30 @@
             }
         }   //End of Start Function
 
-        function renderKB(message) {
+        function renderKB(message, confidence) {
             var card = document.createElement("div")
             var body = document.createElement("div")
             var name = document.createElement("h5")
             var text = document.createElement("p")
             var button = document.createElement("button")
+            var conf = document.createElement("p")
             card.className = "card m-2 bg-light"
             body.className = "card-body"
             name.className = "card-title"
             text.className = "card-text"
             button.className = "btn btn-secondary"
+            conf.className = "card-text text-end end-0"
             name.innerHTML = 'Knowledge Base'
             text.innerHTML = message
             button.innerHTML = "Send"
             button.onclick = function () {
                 sendMessage(message)
             }
+            conf.innerHTML = "Confidence: " + confidence
             body.appendChild(name)
             body.appendChild(text)
             body.appendChild(button)
+            body.appendChild(conf)
             card.appendChild(body)
             document.getElementById("messages").appendChild(card)
             document.getElementById('messages').scrollTo(0, document.getElementById('messages').scrollHeight)
