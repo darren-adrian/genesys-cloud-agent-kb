@@ -1,20 +1,24 @@
 <!DOCTYPE html>
+
 <head>
-    <meta name="robots" content="noindex" /><!--Removes Google Crawler from indexing page-->
+    <meta name="robots" content="noindex" />
+    <!--Removes Google Crawler from indexing page-->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>kb</title>
     <meta name="Reception" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-
+    <link
+        href="https://dhqbrvplips7x.cloudfront.net/common-ui-docs/genesys-webcomponents/3.8.1-178/genesys-webcomponents/genesys-webcomponents.css"
+        rel="stylesheet">
+    <script type="module"
+        src="https://dhqbrvplips7x.cloudfront.net/common-ui-docs/genesys-webcomponents/3.8.1-178/genesys-webcomponents/genesys-webcomponents.esm.js"></script>
     <script src="https://sdk-cdn.mypurecloud.com/javascript/121.0.0/purecloud-platform-client-v2.min.js"></script>
 </head>
 
-<body onload="start()">
+<body id="body" onload="start()">
     <div class="container" id="container">
-        <div id="messages" class="container overflow-auto position-relative m-3">
+        <div id="messages">
         </div>
     </div>
     <script>
@@ -24,7 +28,7 @@
         let gc_redirectUrl = getParameterByName('gc_redirectUrl')
         let gc_kb = getParameterByName('gc_kb')
         let gc_conversationId
-        let gc_communicationId        
+        let gc_communicationId
 
         //Getting and setting the GC details from dynamic URL and session storage
         if (gc_region) {
@@ -148,7 +152,7 @@
                                             agentParticipant = conversation.participants.slice().reverse().find(p => p.purpose === 'agent')
                                             if (agentParticipant) {
                                                 console.log('agent found: ', agentParticipant)
-                                                gc_communicationId = agentParticipant.messages[0].id                                                
+                                                gc_communicationId = agentParticipant.messages[0].id
                                             }
                                         }
                                     }
@@ -166,33 +170,57 @@
             }
         }   //End of Start Function
 
-        function renderKB(message, confidence) {
-            var card = document.createElement("div")
-            var body = document.createElement("div")
-            var name = document.createElement("h5")
+        async function renderKB(message, confidence) {
+            var card = document.createElement("gux-card-beta")
+            var title = document.createElement("h1")
+            var inner = document.createElement("gux-card-beta")
             var text = document.createElement("p")
-            var button = document.createElement("button")
+            var spacerTop = document.createElement("br")
+            var spacer = document.createElement("br")
+            var div = document.createElement("div")
+            var button = document.createElement("gux-button")
+            var buttonUp = document.createElement("gux-button")
+            var upIcon = document.createElement("gux-icon")
+            var buttonDown = document.createElement("gux-button")
+            var downIcon = document.createElement("gux-icon")
             var conf = document.createElement("p")
-            card.className = "card m-2 bg-light"
-            body.className = "card-body"
-            name.className = "card-title"
-            text.className = "card-text"
-            button.className = "btn btn-secondary"
-            conf.className = "card-text text-end end-0"
-            name.innerHTML = 'Knowledge Base'
-            text.innerHTML = message
-            button.innerHTML = "Send"
+            card.style = "width: auto"
+            card.setAttribute("accent", "raised")
+            text.innerText = message
+            inner.setAttribute("accent", "filled")
+            div.style = "display: inline"
+            button.innerText = "Send"
+            button.setAttribute("accent", "primary")
+            button.className = "button-styling"
+            button.style = "padding-right: 8px"
             button.onclick = function () {
                 sendMessage(message)
             }
-            conf.innerHTML = "Confidence: " + confidence
-            body.appendChild(name)
-            body.appendChild(text)
-            body.appendChild(button)
-            body.appendChild(conf)
-            card.appendChild(body)
+            upIcon.setAttribute("screenreader-text", "thumbs up")
+            upIcon.setAttribute("icon-name", "thumbs-up")
+            buttonUp.style = "padding-right: 8px"
+            downIcon.setAttribute("screenreader-text", "thumbs down")
+            downIcon.setAttribute("icon-name", "thumbs-down")
+            buttonDown.style = "padding-right: 8px"
+            buttonUp.append(upIcon)
+            buttonDown.append(downIcon)
+            conf.innerText = "Confidence: " + confidence
+            inner.append(text)
+            div.append(button)
+            div.append(buttonUp)
+            div.append(buttonDown)
+            div.append(conf)
+            card.append(title)
+            card.append(inner)
+            card.append(spacer)
+            card.append(div)
+            document.getElementById("messages").appendChild(spacerTop)
             document.getElementById("messages").appendChild(card)
-            document.getElementById('messages').scrollTo(0, document.getElementById('messages').scrollHeight)
+            setTimeout(function () {
+                window.scrollTo(0, document.body.scrollHeight)
+                document.getElementById("messages")
+            }, 500)
+            setTimeout(function () { }, 1000)
         }
 
         async function sendMessage(message) {
@@ -214,7 +242,6 @@
             return decodeURIComponent(results[2].replace(/\+/g, ' '));
         }
     </script>
-
 </body>
 
 </html>
