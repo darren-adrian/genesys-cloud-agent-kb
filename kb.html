@@ -172,8 +172,6 @@
 
         async function renderKB(message, confidence) {
             var card = document.createElement("gux-card-beta")
-            var title = document.createElement("h1")
-            var inner = document.createElement("gux-card-beta")
             var text = document.createElement("p")
             var spacerTop = document.createElement("br")
             var spacer = document.createElement("br")
@@ -187,7 +185,6 @@
             card.style = "width: auto"
             card.setAttribute("accent", "raised")
             text.innerText = message
-            inner.setAttribute("accent", "filled")
             div.style = "display: inline"
             button.innerText = "Send"
             button.setAttribute("accent", "primary")
@@ -205,13 +202,11 @@
             buttonUp.append(upIcon)
             buttonDown.append(downIcon)
             conf.innerText = "Confidence: " + confidence
-            inner.append(text)
             div.append(button)
             div.append(buttonUp)
             div.append(buttonDown)
             div.append(conf)
-            card.append(title)
-            card.append(inner)
+            card.append(text)
             card.append(spacer)
             card.append(div)
             document.getElementById("messages").appendChild(spacerTop)
