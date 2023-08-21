@@ -16,10 +16,10 @@ Once you have Created your OAuth you will need to create a "Group" to enable the
 
 ![](/docs/images/screenShot3.png?raw=true)
 
-Now create the "Interaction Widget" Integration and under the configuration set the URL to the full URL including the parameters that are required from above: "clientId", "redirectURL", "region" and "gc_deploymentId". Also select the "Communication Type Filtering" to webmessaging, to ensure it only runs on this media type.
+Now create the "Interaction Widget" Integration and under the configuration set the URL to the full URL including the parameters that are required from above: "clientId", "redirectURL", "region", "gc_deploymentId" and "conversationId" this last item is dynamic. Also select the "Communication Type Filtering" to webmessaging, to ensure it only runs on this media type. Details on the conversationId as well as other parms you can dynamiclly pass in can be found [here](https://developer.genesys.cloud/platform/integrations/client-apps/)
 
 ```
-http://localhost:3333/kb.html?gc_region=mypurecloud.com.au&gc_clientId=ENTER_YOUR_ID&gc_redirectUrl=http://localhost:3333/kb.html&gc_deploymentId=ENTER_YOUR_ID
+http://localhost:3333/kb.html?gc_region=mypurecloud.com.au&gc_clientId=ENTER_YOUR_ID&gc_redirectUrl=http://localhost:3333/kb.html&gc_deploymentId=ENTER_YOUR_ID&conversationId={{pcConversationId}}
 ```
 
 ![](/docs/images/screenShot4.png?raw=true)
